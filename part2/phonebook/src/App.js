@@ -1,44 +1,65 @@
-import { useState } from 'react'
+import {useState} from 'react'
+import Filter from './components/filter'
+import PersonForm from './components/personForm'
+import Persons from './components/persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' , },
-    { name: 'John Salsichon',}
-  ]) 
-  const [newName, setNewName] = useState('')
+    const [persons, setPersons] = useState([
+        {name: 'Arto Hellas', number: '040-123456', id: 1},
+        {name: 'Ada Lovelace', number: '39-44-5323523', id: 2},
+        {name: 'Dan Abramov', number: '12-43-234345', id: 3},
+        {name: 'Mary Poppendieck', number: '39-23-6423122', id: 4}
+    ])
+    const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
+    const [filter, setFilter] = useState('')
 
-  const addName = (event) => {
-    event.preventDefault()
-    console.log('button clicked', event.target)
-  }
+    const handleNameChange = (event) => {
+        console.log(event.target.value)
+        setNewName(event.target.value)
+    }
 
-  const handleNameChange = (event) => {
-    console.log(event.target.value)
-    setNewName(event.target.value)
-  }
+    const handleNumberChange = (event) => {
+        console.log(event.target.value)
+        setNewNumber(event.target.value)
+    }
+    const handleFilterChange = (event) => {
+        console.log(event.target.value)
+        setFilter(event.target.value)
+    }
 
-  const Persons = ({persons}) => {
-    return(persons.map(person => <p>{person.name}</p>))
-  }
+    const addPerson = (event) => {
+        event.preventDefault()
 
+        if (persons.find(person => person.name === newName)) {
+            alert(`${newName} is already added to phonebook`)
 
+            return
+        }
 
-  return (
-    <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+        const notePerson = {
+            name: newName,
+            number: newNumber
+        }
+
+        setPersons(persons.concat(notePerson))
+        setNewName('')
+        setNewNumber('')
+    }
+
+    let personsToShow = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+
+    return (
         <div>
-          name: <input value={newName} onChange={handleNameChange} />
+            <h2>Phonebook</h2>
+            <Filter filter={filter} changeHandler={handleFilterChange}/>
+            <h2>Add new</h2>
+            <PersonForm name={newName} nameChangeHandler={handleNameChange} number={newNumber}
+                        numberChangeHandler={handleNumberChange} addPersonClickHandler={addPerson}/>
+            <h2>Numbers</h2>
+            <Persons persons={personsToShow}/>
         </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <p>debug: {newName}</p>
-      <Persons persons={persons} />
-    </div>
-  )
+    )
 }
 
 export default App
