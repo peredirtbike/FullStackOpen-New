@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
 import Filter from './components/filter'
+import Notification from "./components/notification";
 import PersonForm from './components/personForm'
 import Persons from './components/persons'
 
+import './index.css'
+
+
 const App = () => {
+    const [notification, setNotification] = useState(null);
+    const [style, setStyle] = useState(null);
+
     const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
@@ -17,6 +24,15 @@ const App = () => {
             setPersons(initialNotes)
           })
       }, [])
+
+    const notify = (msg, style) => {
+      setNotification(msg);
+      setStyle(style);
+      setTimeout(() => {
+        setNotification(null);
+        setStyle(null);
+      }, 3000);
+    };
 
     const handleNameChange = (event) => {
         console.log(event.target.value)
@@ -46,7 +62,7 @@ const App = () => {
               setPersons(
                 persons.map((p) => (p.id !== duplicate.id ? p : updatedPerson))
               );
-              alert(`${updatedPerson.name} has been updated`, "success")
+              notify(`${updatedPerson.name} has been updated`, "success");
               setNewName("");
               setNewNumber("");
             })
@@ -56,7 +72,7 @@ const App = () => {
           .create(person)
           .then(returnedPerson => {
             setPersons(persons.concat(returnedPerson))
-            alert(`${returnedPerson.name} has been added to phonebook`, "success")
+            notify(`${returnedPerson.name} has been added to phonebook`, "success")
             setNewName("")
             setNewNumber("")
           })
@@ -70,11 +86,11 @@ const App = () => {
         .remove(person.id)
         .then(() => {
           setPersons(persons.filter((p) => p.id !== person.id));
-          alert(`${person.name} has been removed !`, "success");
+          notify(`${person.name} has been removed !`, "success");
         })
         .catch(() => {
           setPersons(persons.filter((p) => p.id !== person.id));
-          alert(`${person.name} has been already removed!`, "error");
+          notify(`${person.name} has been already removed!`, "error");
         })
       }
     }
@@ -85,6 +101,7 @@ const App = () => {
 
     return (
         <div>
+            <Notification message={notification} style={style} />
             <h2>Phonebook</h2>
             <Filter filter={filter} changeHandler={handleFilterChange}/>
             <h2>Add new</h2>

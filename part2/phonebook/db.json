@@ -1,31 +1,6 @@
 {
   "persons": [
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "634544319",
-      "id": 4
-    },
-    {
-      "name": "3tfdsfasdf",
-      "number": "1235152º1",
-      "id": 6
-    },
-    {
-      "name": "fasdga",
-      "number": "12351",
-      "id": 7
-    },
-    {
-      "name": "Joana",
-      "number": "32532",
-      "id": 8
-    },
-    {
       "name": "dsadsa",
       "number": "32523523",
       "id": 9
@@ -44,6 +19,16 @@
       "name": "Arto Hellas",
       "number": "52152",
       "id": 12
+    },
+    {
+      "name": "Pere Garcia Grau",
+      "number": "sad",
+      "id": 13
+    },
+    {
+      "name": "Pedro garcia",
+      "number": "654321",
+      "id": 14
     }
   ]
 }
